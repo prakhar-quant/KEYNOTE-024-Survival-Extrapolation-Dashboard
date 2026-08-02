@@ -2,9 +2,7 @@
 
 An end-to-end HEOR / biostatistics pipeline: **digitized published Kaplan-Meier curve → reconstructed pseudo-IPD → parametric survival modeling → interactive extrapolation dashboard.** Built entirely on base R — no `flexsurv` or `IPDfromKM` dependency, so every statistical step (the Guyot reconstruction algorithm and all six parametric model fits) is implemented from first principles and fully auditable in `app.R`.
 
-**Live demo:** _add your shinyapps.io link here after running `deploy.R`_
-
-![Reconstructed overall survival](assets/fig1_km_validation.png)
+**Live demo:** https://prakhargupta.shinyapps.io/survivalextrapolationdashboard/ `deploy.R`_
 
 ## What this does
 
