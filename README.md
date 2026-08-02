@@ -1,140 +1,30 @@
 # KEYNOTE-024 Survival Extrapolation Dashboard
 
-An interactive **Health Economics and Outcomes Research (HEOR)** dashboard that reconstructs individual patient-level survival data (pseudo-IPD) from a published Kaplan–Meier curve and performs **parametric survival modeling**, **survival extrapolation**, and **restricted mean survival time (RMST)** analysis.
+An interactive **Health Economics and Outcomes Research (HEOR)** tool that reconstructs patient-level survival data from a published clinical trial figure and extrapolates it into decision-ready projections.
 
-🌐 **Live Dashboard:**  
+**Live dashboard:**  
 https://prakhargupta.shinyapps.io/survivalextrapolationdashboard/
 
 ---
 
-# Project Overview
+## About
 
-Published oncology clinical trials generally provide Kaplan–Meier survival curves, hazard ratios, and summary statistics but do not release the underlying patient-level survival data.
-
-However, patient-level data are essential for:
-
-- Health Technology Assessment (HTA)
-- Cost-Effectiveness Analysis (CEA)
-- Budget Impact Analysis (BIA)
-- Long-term survival extrapolation
-- Decision-analytic modeling
-- Health Economics and Outcomes Research (HEOR)
-
-This project demonstrates an end-to-end survival reconstruction and extrapolation workflow using the **KEYNOTE-024** clinical trial, which established **Pembrolizumab** as first-line therapy for advanced non-small-cell lung cancer (NSCLC) with high PD-L1 expression.
+Published clinical trials typically report survival outcomes as a Kaplan–Meier curve and a handful of summary statistics—never the underlying patient-level data. Yet health economic evaluations depend on exactly that kind of data to model survival beyond a trial's observed follow-up. This project closes that gap for a single, real, and clinically significant example: **KEYNOTE-024**, the pivotal trial that established **pembrolizumab** as a first-line treatment for advanced non-small-cell lung cancer with high PD-L1 expression.
 
 ---
 
-# Objectives
+## What it does
 
-The dashboard was developed to:
-
-- Reconstruct pseudo individual patient-level data (pseudo-IPD)
-- Validate reconstructed survival data
-- Fit multiple parametric survival distributions
-- Compare statistical goodness-of-fit
-- Extrapolate survival beyond observed follow-up
-- Calculate Restricted Mean Survival Time (RMST)
-- Present the complete workflow through an interactive R Shiny dashboard
+- Reconstructs individual patient-level survival records directly from the trial's published Overall Survival curve and its number-at-risk table.
+- Fits six standard parametric survival distributions and ranks them by statistical fit, following the modeling approach recommended for economic survival extrapolation.
+- Projects survival beyond the trial's observed follow-up window and calculates **Restricted Mean Survival Time (RMST)**, a core input to cost-effectiveness modeling.
+- Presents the entire pipeline as an interactive dashboard, allowing every step—from the reconstructed curve to the extrapolated projection—to be explored rather than simply reported.
 
 ---
 
-# Workflow
+## Validation
 
-```text
-Published Kaplan–Meier Curve
-            │
-            ▼
- Digitization (WebPlotDigitizer)
-            │
-            ▼
- Number-at-Risk Table
-            │
-            ▼
- Guyot Algorithm
- (Pseudo-IPD Reconstruction)
-            │
-            ▼
- Kaplan–Meier Validation
-            │
-            ▼
- Parametric Survival Models
-            │
-            ▼
- Survival Extrapolation
-            │
-            ▼
- RMST Calculation
-            │
-            ▼
- Interactive R Shiny Dashboard
-```
-
----
-
-# Dashboard Features
-
-## Overview
-
-- Total reconstructed patients
-- Number of events
-- Hazard ratio comparison
-- Trial summary
-
----
-
-## Kaplan–Meier Curves & Validation
-
-- Original KM curve
-- Reconstructed KM curve
-- Overlay comparison
-- Survival validation
-
----
-
-## Parametric Survival Modeling
-
-The dashboard fits six commonly used parametric survival distributions:
-
-- Exponential
-- Weibull
-- Gompertz
-- Gamma
-- Log-normal
-- Log-logistic
-
-Each model is evaluated using:
-
-- Log-likelihood
-- AIC
-- BIC
-
-Users can compare model performance interactively.
-
----
-
-## Survival Extrapolation
-
-Generate long-term survival projections by:
-
-- Selecting the preferred parametric distribution
-- Choosing an extrapolation horizon
-- Comparing projected survival curves
-
----
-
-## Restricted Mean Survival Time (RMST)
-
-Automatically calculates:
-
-- RMST
-- Incremental survival benefit
-- Treatment comparison
-
----
-
-# Validation
-
-The reconstructed pseudo-IPD was validated against the published KEYNOTE-024 trial results before performing any survival extrapolation. The close agreement between the reconstructed and published estimates demonstrates that the reconstruction accurately reproduces the original trial outcomes.
+The reconstructed dataset was validated against the published **KEYNOTE-024** trial results before being used for downstream survival modeling. The reconstructed hazard ratio, confidence interval, and median overall survival closely matched the values reported in the original publication, demonstrating that the pseudo-IPD accurately reproduces the observed clinical trial outcomes.
 
 | Metric | Reconstructed | Published |
 |--------|---------------|-----------|
@@ -143,132 +33,18 @@ The reconstructed pseudo-IPD was validated against the published KEYNOTE-024 tri
 | Pembrolizumab Median Overall Survival | **Not Reached** | **Not Reached** |
 | Chemotherapy Median Overall Survival | **12.6 months** | **Consistent with published curve** |
 
-**Conclusion:** The reconstructed survival data closely replicate the published KEYNOTE-024 results, providing confidence that the subsequent parametric modeling and long-term survival extrapolation are based on a reliable pseudo-IPD reconstruction.
+The close agreement between the reconstructed and published survival estimates provides confidence that the extrapolated projections are based on a reliable reconstruction of the original clinical trial data rather than artifacts introduced during the reconstruction process.
 
 ---
 
-# Repository Structure
+## Conclusion
 
-```text
-KEYNOTE-024-Survival-Extrapolation-Dashboard
-│
-├── app.R
-├── README.md
-├── LICENSE
-├── .gitignore
-│
-├── data
-│   ├── chemotherapy_os_cleaned.csv
-│   ├── pembrolizumab_os_cleaned.csv
-│   └── risk_table.csv
-│
-├── images
-│   ├── dashboard_overview.png
-│   ├── km_validation.png
-│   ├── parametric_modeling.png
-│   ├── extrapolation.png
-│   └── methodology.png
-│
-├── docs
-│   ├── methodology.pdf
-│   └── KEYNOTE024_reference.pdf
-│
-└── www
-    ├── logo.png
-    └── style.css
-```
+This project demonstrates a complete, decision-analytic-ready survival analysis pipeline built entirely around a single published figure—showing that meaningful HEOR-style extrapolation is possible even when a trial's patient-level data were never made public. Applied to **KEYNOTE-024**, it reproduces the trial's core findings and extends them into the kind of long-term projections that real-world health economic evaluations depend on.
 
 ---
 
-# Technologies Used
+## Made by
 
-## Programming
-
-- R
-
-## Framework
-
-- Shiny
-
-## Statistical Packages
-
-- survival
-- flexsurv
-- survRM2
-
-## Visualization
-
-- ggplot2
-- plotly
-- DT
-
-## Data Manipulation
-
-- dplyr
-- tidyr
-- readr
-
-## User Interface
-
-- bslib
-- shinyWidgets
-
-## Digitization
-
-- WebPlotDigitizer
-
----
-
-# Clinical Trial Reference
-
-**KEYNOTE-024**
-
-Reck M, Rodríguez-Abreu D, Robinson AG, Hui R, et al.
-
-**Pembrolizumab versus Chemotherapy for PD-L1–Positive Non–Small-Cell Lung Cancer**
-
-*New England Journal of Medicine.*
-
-2016;375:1823–1833.
-
----
-
-# Future Improvements
-
-Planned enhancements include:
-
-- Bayesian survival models
-- Generalized Gamma distribution
-- Flexible spline models
-- Mixture cure models
-- External validation datasets
-- Cost-effectiveness analysis module
-- Partitioned survival model
-- Markov model integration
-- Downloadable analysis reports
-
----
-
-# Author
-
-## Prakhar Gupta
-
+**Prakhar Gupta**  
 **M.Sc. Statistics & Computing**  
 Banaras Hindu University (BHU)
-
-### Connect
-
-- LinkedIn: https://www.linkedin.com/in/prakhar-quant/
-- GitHub: https://github.com/prakhar-quant
-
----
-
-# License
-
-This project is licensed under the **MIT License**.
-
----
-
-## Acknowledgements
-
-This dashboard was developed for educational and research purposes to demonstrate a complete HEOR survival analysis workflow using publicly available clinical trial results. The original clinical trial data and publication belong to the respective study investigators and publishers.
